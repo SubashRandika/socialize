@@ -1,19 +1,37 @@
 import { ApolloServer, gql } from "apollo-server";
+import { DateTimeResolver } from "graphql-scalars";
 import dotenv from "dotenv";
 import colors from "colors";
+
 import connectDB from "./config/db.js";
+import Post from "./models/Post.js";
 
 dotenv.config();
 
 const typeDefs = gql`
+	scalar DateTime
+	type Post {
+		id: ID!
+		body: String!
+		username: String!
+		createdAt: DateTime
+	}
 	type Query {
-		sayHi: String!
+		getPosts: [Post]
 	}
 `;
 
 const resolvers = {
+	DateTime: DateTimeResolver,
 	Query: {
-		sayHi: () => "Hello World!"
+		async getPosts() {
+			try {
+				const posts = await Post.find();
+				return posts;
+			} catch (error) {
+				throw new Error(error);
+			}
+		}
 	}
 };
 
