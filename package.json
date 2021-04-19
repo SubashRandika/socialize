@@ -2,7 +2,7 @@
   "name": "socialize",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "description": "Simple social media full stack application using MERNG stack.",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
