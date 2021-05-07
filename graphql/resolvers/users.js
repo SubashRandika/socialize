@@ -2,13 +2,19 @@ import { UserInputError } from "apollo-server-errors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../../models/User.js";
+import { validateRegisterInput } from "../../util/validations.js";
 
 const userResolvers = {
 	Mutation: {
 		async register(parent, { registerInput }, context, info) {
+			// Validate user input data
 			let { username, email, password, confirmPassword } = registerInput;
-			// TODO: Validate Data
-			
+			const { errors, isValid } = validateRegisterInput(username, email, password, confirmPassword);
+
+			if (!isValid) {
+				throw new UserInputError("Errors", { errors });
+			}
+
 			//make sure user already exists
 			const user = await User.findOne({ username });
 
