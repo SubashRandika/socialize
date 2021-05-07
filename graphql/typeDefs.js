@@ -23,10 +23,13 @@ const typeDefs = gql`
 	}
 	type Query {
 		getPosts: [Post]
+		getPost(id: ID!): Post
 	}
 	type Mutation {
 		register(registerInput: RegisterInput): User!
 		login(username: String!, password: String!): User!
+		createPost(body: String!): Post!
+		deletePost(id: ID!): String!
 	}
 `;
 
