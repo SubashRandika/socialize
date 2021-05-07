@@ -1,10 +1,12 @@
 import Post from "../../models/Post.js";
+import { checkAuthentication } from "../../util/checkAuth.js";
 
 const postResolvers = {
 	Query: {
 		async getPosts() {
 			try {
-				const posts = await Post.find();
+				const posts = await Post.find({});
+				console.log(posts);
 				return posts;
 			} catch (error) {
 				throw new Error(error);
@@ -26,6 +28,21 @@ const postResolvers = {
 			} catch (error) {
 				throw new Error(error);
 			}
+		}
+	},
+	Mutation: {
+		async createPost(_, { body }, context) {
+			const user = await checkAuthentication(context);
+
+			const newPost = new Post({
+				body,
+				user: user.id,
+				username: user.username
+			});
+
+			const post = await newPost.save();
+
+			return post;
 		}
 	}
 };

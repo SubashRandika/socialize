@@ -10,7 +10,8 @@ dotenv.config();
 
 const server = new ApolloServer({
 	typeDefs,
-	resolvers
+	resolvers,
+	context: ({ req }) => ({ req })
 });
 
 const startServer = async () => {
