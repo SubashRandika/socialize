@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import colors from "colors";
 
 import typeDefs from "./graphql/typeDefs.js";
-import resolvers from "./graphql/resolvers";
+import resolvers from "./graphql/resolvers/index.js";
 import connectDB from "./config/db.js";
 
 dotenv.config();
