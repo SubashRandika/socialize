@@ -1,9 +1,9 @@
-import { ApolloServer, gql } from "apollo-server";
+import { ApolloServer } from "apollo-server";
 import dotenv from "dotenv";
 import colors from "colors";
 
 import typeDefs from "./graphql/typeDefs.js";
-import resolvers from "./graphql/resolvers/root.js";
+import resolvers from "./graphql/resolvers";
 import connectDB from "./config/db.js";
 
 dotenv.config();
