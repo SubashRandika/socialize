@@ -35,6 +35,10 @@ const postResolvers = {
 		async createPost(_, { body }, context) {
 			const user = await checkAuthentication(context);
 
+			if (body.trim() === "") {
+				throw new UserInputError("Post body cannot be empty");
+			}
+
 			const newPost = new Post({
 				body,
 				user: user.id,
