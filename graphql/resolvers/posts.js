@@ -1,3 +1,4 @@
+import { UserInputError } from "apollo-server";
 import { AuthenticationError } from "apollo-server-errors";
 import Post from "../../models/Post.js";
 import { checkAuthentication } from "../../util/checkAuth.js";
@@ -21,7 +22,7 @@ const postResolvers = {
 				const post = await Post.findById(id).exec();
 
 				if (!post) {
-					throw new Error("Post cannot be found");
+					throw new UserInputError("Post cannot be found");
 				}
 
 				return post;
@@ -51,7 +52,7 @@ const postResolvers = {
 				const post = await Post.findById(id).exec();
 
 				if (!post) {
-					throw new Error("Does not exists. Post may be deleted");
+					throw new UserInputError("Does not exists. Post may be deleted");
 				}
 
 				if (user?.username === post?.username) {
@@ -60,6 +61,31 @@ const postResolvers = {
 				} else {
 					throw new AuthenticationError("Not allowed to perform this action");
 				}
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
+		async likePost(_, { postId }, context) {
+			const { username } = await checkAuthentication(context);
+
+			try {
+				const post = await Post.findById(postId).exec();
+
+				if (!post) {
+					throw new UserInputError("Post cannot be found");
+				}
+
+				if (post.likes.find((like) => like.username === username)) {
+					// Post is already liked and need to unlike it
+					post.likes = post.likes.filter((like) => like.username !== username);
+				} else {
+					post.likes.push({
+						username
+					});
+				}
+
+				await post.save();
+				return post;
 			} catch (err) {
 				throw new Error(err);
 			}
