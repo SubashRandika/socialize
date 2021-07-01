@@ -5,6 +5,10 @@ import commentResolvers from "./comments.js";
 
 const resolvers = {
 	DateTime: DateTimeResolver,
+	Post: {
+		likeCount: (parent) => parent.likes.length,
+		commentCount: (parent) => parent.comments.length
+	},
 	Query: {
 		...postResolvers.Query
 	},
