@@ -5,6 +5,7 @@
   "description": "Simple social media full stack application using MERNG stack.",
   "main": "index.js",
   "scripts": {
+    "serve": "node index.js",
     "start": "nodemon index.js"
   },
   "keywords": [],
