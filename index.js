@@ -1,4 +1,4 @@
-import { ApolloServer } from "apollo-server";
+import { ApolloServer, PubSub } from "apollo-server";
 import dotenv from "dotenv";
 import colors from "colors";
 
@@ -8,10 +8,12 @@ import connectDB from "./config/db.js";
 
 dotenv.config();
 
+const pubsub = new PubSub();
+
 const server = new ApolloServer({
 	typeDefs,
 	resolvers,
-	context: ({ req }) => ({ req })
+	context: ({ req }) => ({ req, pubsub })
 });
 
 const startServer = async () => {
