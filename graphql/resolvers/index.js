@@ -1,6 +1,7 @@
 import { DateTimeResolver } from "graphql-scalars";
 import postResolvers from "./posts.js";
 import userResolvers from "./users.js";
+import commentResolvers from "./comments.js";
 
 const resolvers = {
 	DateTime: DateTimeResolver,
@@ -9,7 +10,8 @@ const resolvers = {
 	},
 	Mutation: {
 		...userResolvers.Mutation,
-		...postResolvers.Mutation
+		...postResolvers.Mutation,
+		...commentResolvers.Mutation
 	}
 };
 
