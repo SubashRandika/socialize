@@ -74,7 +74,7 @@ const userResolvers = {
 			const match = await bcrypt.compare(password, user.password);
 
 			if (!match) {
-				errors.general = "Incorrect password provided";
+				errors.password = "Incorrect password provided";
 				throw new UserInputError("Incorrect password provided", { errors });
 			}
 
