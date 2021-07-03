@@ -6,7 +6,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 dayjs.extend(relativeTime);
 const PostCard = ({ post }) => {
-	const { id, body, username, likes, likeCount, commentCount, createdAt } = post;
+	const { id, body, username, likeCount, commentCount, createdAt } = post;
 
 	const handleLikePost = () => {
 		console.log("Post Liked");

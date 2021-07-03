@@ -17,7 +17,9 @@ const Home = () => {
 
 	return (
 		<>
-			<Header as='h1'>Recent Posts</Header>
+			<Header as='h1' textAlign='center'>
+				Recent Posts
+			</Header>
 			<Grid columns={3}>
 				{loading ? (
 					<Loader active={loading} size='big'>
