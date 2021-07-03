@@ -3,23 +3,18 @@ import { useHistory } from "react-router-dom";
 import { Button, Container, Form, Grid, Header, Input } from "semantic-ui-react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
+import { useForm } from "../utils/hooks";
 
 const Register = () => {
 	const [errors, setErrors] = useState({});
-	const [values, setValues] = useState({
+	const history = useHistory();
+
+	const { handleChange, handleSubmit, values } = useForm(registerUser, {
 		username: "",
 		email: "",
 		password: "",
 		confirmPassword: ""
 	});
-	const history = useHistory();
-
-	const handleChange = (event) => {
-		setValues({
-			...values,
-			[event.target.name]: event.target.value
-		});
-	};
 
 	const [addUser, { loading }] = useMutation(REGISTER_USER, {
 		update(proxy, result) {
@@ -32,10 +27,9 @@ const Register = () => {
 		variables: values
 	});
 
-	const handleSubmit = (event) => {
-		event.preventDefault();
+	function registerUser() {
 		addUser();
-	};
+	}
 
 	return (
 		<Container>
