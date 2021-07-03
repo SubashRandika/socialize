@@ -1,25 +1,33 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Container, Form, Grid, Header, Input } from "semantic-ui-react";
+import { useMutation } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+import { useForm } from "../utils/hooks";
 
 const Login = () => {
 	const [errors, setErrors] = useState({});
-	const [values, setValues] = useState({
+	const history = useHistory();
+
+	const { handleChange, handleSubmit, values } = useForm(loginUserCallback, {
 		username: "",
 		password: ""
 	});
-	const history = useHistory();
 
-	const handleChange = (event) => {
-		setValues({
-			...values,
-			[event.target.name]: event.target.value
-		});
-	};
+	const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+		update(proxy, result) {
+			history.push("/");
+		},
+		onError(err) {
+			console.log(err.graphQLErrors[0].extensions.exception.errors);
+			setErrors(err.graphQLErrors[0].extensions.exception.errors);
+		},
+		variables: values
+	});
 
-	const handleSubmit = (event) => {
-		event.preventDefault();
-	};
+	function loginUserCallback() {
+		loginUser();
+	}
 
 	return (
 		<Container>
@@ -28,7 +36,7 @@ const Login = () => {
 			</Header>
 			<Grid centered columns={3}>
 				<Grid.Column>
-					<Form onSubmit={handleSubmit} noValidate>
+					<Form onSubmit={handleSubmit} noValidate className={loading ? "loading" : ""}>
 						<Form.Field
 							control={Input}
 							type='text'
@@ -58,5 +66,17 @@ const Login = () => {
 		</Container>
 	);
 };
+
+const LOGIN_USER = gql`
+	mutation login($username: String!, $password: String!) {
+		login(username: $username, password: $password) {
+			id
+			email
+			username
+			token
+			createdAt
+		}
+	}
+`;
 
 export default Login;
