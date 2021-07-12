@@ -1,19 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Button, Card, Icon, Image, Label } from "semantic-ui-react";
+import { Button, Card, Icon, Image, Label, Popup } from "semantic-ui-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { AuthContext } from "../context/auth";
 
 dayjs.extend(relativeTime);
 const PostCard = ({ post }) => {
+	const { user } = useContext(AuthContext);
 	const { id, body, username, likeCount, commentCount, createdAt } = post;
 
 	const handleLikePost = () => {
 		console.log("Post Liked");
-	};
-
-	const handleCommentPost = () => {
-		console.log("Post Commented");
 	};
 
 	return (
@@ -29,24 +27,40 @@ const PostCard = ({ post }) => {
 				<Card.Description>{body}</Card.Description>
 			</Card.Content>
 			<Card.Content extra>
-				<Button as='div' labelPosition='right' onClick={handleLikePost}>
-					<Button basic color='teal'>
-						<Icon name='heart' />
-						Like
-					</Button>
-					<Label basic color='teal' pointing='left'>
-						{likeCount}
-					</Label>
-				</Button>
-				<Button as='div' labelPosition='right' onClick={handleCommentPost}>
-					<Button basic color='blue'>
-						<Icon name='comments' />
-						Comment
-					</Button>
-					<Label basic color='blue' pointing='left'>
-						{commentCount}
-					</Label>
-				</Button>
+				<div>
+					<Popup
+						content='Like'
+						trigger={
+							<Button as='div' labelPosition='right' onClick={handleLikePost}>
+								<Button basic color='teal'>
+									<Icon name='heart' />
+								</Button>
+								<Label basic color='teal' pointing='left'>
+									{likeCount}
+								</Label>
+							</Button>
+						}
+					/>
+					<Popup
+						content='Comment'
+						trigger={
+							<Button labelPosition='right' as={Link} to={`/posts/${id}`}>
+								<Button basic color='blue'>
+									<Icon name='comments' />
+								</Button>
+								<Label basic color='blue' pointing='left'>
+									{commentCount}
+								</Label>
+							</Button>
+						}
+					/>
+					{user?.username === username && (
+						<Popup
+							content='Delete'
+							trigger={<Button floated='right' color='red' icon='trash' onClick={() => console.log("Post Deleted")} />}
+						/>
+					)}
+				</div>
 			</Card.Content>
 		</Card>
 	);
