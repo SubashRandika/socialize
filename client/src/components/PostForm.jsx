@@ -25,6 +25,7 @@ const PostForm = () => {
 				data
 			});
 			values.body = "";
+			setErrors({});
 			history.push("/");
 		},
 		onError(err) {
