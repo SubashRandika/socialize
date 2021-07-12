@@ -27,40 +27,38 @@ const PostCard = ({ post }) => {
 				<Card.Description>{body}</Card.Description>
 			</Card.Content>
 			<Card.Content extra>
-				<div>
-					<Popup
-						content='Like'
-						trigger={
-							<Button as='div' labelPosition='right' onClick={handleLikePost}>
-								<Button basic color='teal'>
-									<Icon name='heart' />
-								</Button>
-								<Label basic color='teal' pointing='left'>
-									{likeCount}
-								</Label>
+				<Popup
+					content='Like'
+					trigger={
+						<Button as='div' labelPosition='right' onClick={handleLikePost}>
+							<Button basic color='teal'>
+								<Icon name='heart' />
 							</Button>
-						}
-					/>
-					<Popup
-						content='Comment'
-						trigger={
-							<Button labelPosition='right' as={Link} to={`/posts/${id}`}>
-								<Button basic color='blue'>
-									<Icon name='comments' />
-								</Button>
-								<Label basic color='blue' pointing='left'>
-									{commentCount}
-								</Label>
+							<Label basic color='teal' pointing='left'>
+								{likeCount}
+							</Label>
+						</Button>
+					}
+				/>
+				<Popup
+					content='Comment'
+					trigger={
+						<Button labelPosition='right' as={Link} to={`/posts/${id}`}>
+							<Button basic color='blue'>
+								<Icon name='comments' />
 							</Button>
-						}
+							<Label basic color='blue' pointing='left'>
+								{commentCount}
+							</Label>
+						</Button>
+					}
+				/>
+				{user?.username === username && (
+					<Popup
+						content='Delete'
+						trigger={<Button floated='right' color='red' icon='trash' onClick={() => console.log("Post Deleted")} />}
 					/>
-					{user?.username === username && (
-						<Popup
-							content='Delete'
-							trigger={<Button floated='right' color='red' icon='trash' onClick={() => console.log("Post Deleted")} />}
-						/>
-					)}
-				</div>
+				)}
 			</Card.Content>
 		</Card>
 	);
