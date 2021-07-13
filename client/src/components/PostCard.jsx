@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { AuthContext } from "../context/auth";
 import LikeButton from "./LikeButton";
+import DeleteButton from "./DeleteButton";
 
 dayjs.extend(relativeTime);
 const PostCard = ({ post }) => {
@@ -38,12 +39,7 @@ const PostCard = ({ post }) => {
 						</Button>
 					}
 				/>
-				{user?.username === username && (
-					<Popup
-						content='Delete'
-						trigger={<Button floated='right' color='red' icon='trash' onClick={() => console.log("Post Deleted")} />}
-					/>
-				)}
+				{user?.username === username && <DeleteButton id={id} />}
 			</Card.Content>
 		</Card>
 	);
