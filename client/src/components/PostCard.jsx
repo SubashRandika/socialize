@@ -4,15 +4,12 @@ import { Button, Card, Icon, Image, Label, Popup } from "semantic-ui-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { AuthContext } from "../context/auth";
+import LikeButton from "./LikeButton";
 
 dayjs.extend(relativeTime);
 const PostCard = ({ post }) => {
 	const { user } = useContext(AuthContext);
-	const { id, body, username, likeCount, commentCount, createdAt } = post;
-
-	const handleLikePost = () => {
-		console.log("Post Liked");
-	};
+	const { id, body, username, likes, likeCount, commentCount, createdAt } = post;
 
 	return (
 		<Card fluid>
@@ -27,19 +24,7 @@ const PostCard = ({ post }) => {
 				<Card.Description>{body}</Card.Description>
 			</Card.Content>
 			<Card.Content extra>
-				<Popup
-					content='Like'
-					trigger={
-						<Button as='div' labelPosition='right' onClick={handleLikePost}>
-							<Button basic color='teal'>
-								<Icon name='heart' />
-							</Button>
-							<Label basic color='teal' pointing='left'>
-								{likeCount}
-							</Label>
-						</Button>
-					}
-				/>
+				<LikeButton user={user} post={{ id, likes, likeCount }} />
 				<Popup
 					content='Comment'
 					trigger={
