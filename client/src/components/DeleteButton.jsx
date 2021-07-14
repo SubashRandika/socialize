@@ -3,12 +3,13 @@ import { Button, Confirm, Popup } from "semantic-ui-react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
-const DeleteButton = ({ id }) => {
+const DeleteButton = ({ id, callback }) => {
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [deletePost] = useMutation(DELETE_POST, {
 		update() {
 			setConfirmDelete(false);
 			// TODO: Remove post from cache
+			callback();
 		},
 		variables: { id }
 	});
