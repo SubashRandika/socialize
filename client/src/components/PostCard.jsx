@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Button, Card, Icon, Image, Label, Popup } from "semantic-ui-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -9,8 +9,13 @@ import DeleteButton from "./DeleteButton";
 
 dayjs.extend(relativeTime);
 const PostCard = ({ post }) => {
+	const history = useHistory();
 	const { user } = useContext(AuthContext);
 	const { id, body, username, likes, likeCount, commentCount, createdAt } = post;
+
+	const deletePostCallback = () => {
+		history.push("/");
+	};
 
 	return (
 		<Card fluid>
@@ -39,7 +44,7 @@ const PostCard = ({ post }) => {
 						</Button>
 					}
 				/>
-				{user?.username === username && <DeleteButton id={id} />}
+				{user?.username === username && <DeleteButton id={id} callback={deletePostCallback} />}
 			</Card.Content>
 		</Card>
 	);
