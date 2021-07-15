@@ -4,10 +4,11 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import { Button, Card, Form, Grid, Header, Icon, Image, Input, Label, Loader, Popup } from "semantic-ui-react";
+import { Button, Card, Form, Grid, Header, Icon, Image, Input, Label, Loader } from "semantic-ui-react";
+import { AuthContext } from "../context/auth";
 import LikeButton from "../components/LikeButton";
 import DeleteButton from "../components/DeleteButton";
-import { AuthContext } from "../context/auth";
+import Tooltip from "../components/Tooltip";
 
 dayjs.extend(relativeTime);
 const Post = () => {
@@ -66,19 +67,16 @@ const Post = () => {
 							</Card.Content>
 							<Card.Content extra>
 								<LikeButton user={user} post={{ id, likes, likeCount }} />
-								<Popup
-									content='Comment'
-									trigger={
-										<Button labelPosition='right' as='div'>
-											<Button basic color='blue'>
-												<Icon name='comments' />
-											</Button>
-											<Label basic color='blue' pointing='left'>
-												{commentCount}
-											</Label>
+								<Tooltip content='Comments of post'>
+									<Button labelPosition='right' as='div'>
+										<Button basic color='blue'>
+											<Icon name='comments' />
 										</Button>
-									}
-								/>
+										<Label basic color='blue' pointing='left'>
+											{commentCount}
+										</Label>
+									</Button>
+								</Tooltip>
 								{user?.username === username && <DeleteButton postId={postId} callback={deletePostCallback} />}
 							</Card.Content>
 						</Card>

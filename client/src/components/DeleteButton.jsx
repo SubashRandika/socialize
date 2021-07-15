@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Button, Confirm, Popup } from "semantic-ui-react";
+import { Button, Confirm } from "semantic-ui-react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 import { FETCH_POSTS_QUERY } from "../utils/graphql";
+import Tooltip from "./Tooltip";
 
 const DeleteButton = ({ postId, commentId, callback }) => {
 	const [confirmDelete, setConfirmDelete] = useState(false);
@@ -32,10 +33,9 @@ const DeleteButton = ({ postId, commentId, callback }) => {
 
 	return (
 		<>
-			<Popup
-				content='Delete'
-				trigger={<Button floated='right' color='red' icon='trash' onClick={() => setConfirmDelete(true)} />}
-			/>
+			<Tooltip content={!commentId ? "Delete the post" : "Delete the comment"}>
+				<Button floated='right' color='red' icon='trash' onClick={() => setConfirmDelete(true)} />
+			</Tooltip>
 			<Confirm open={confirmDelete} onCancel={() => setConfirmDelete(false)} onConfirm={deletePost} />
 		</>
 	);

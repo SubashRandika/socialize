@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Button, Card, Icon, Image, Label, Popup } from "semantic-ui-react";
+import { Button, Card, Icon, Image, Label } from "semantic-ui-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { AuthContext } from "../context/auth";
 import LikeButton from "./LikeButton";
 import DeleteButton from "./DeleteButton";
+import Tooltip from "./Tooltip";
 
 dayjs.extend(relativeTime);
 const PostCard = ({ post }) => {
@@ -31,19 +32,16 @@ const PostCard = ({ post }) => {
 			</Card.Content>
 			<Card.Content extra>
 				<LikeButton user={user} post={{ id, likes, likeCount }} />
-				<Popup
-					content='Comment'
-					trigger={
-						<Button labelPosition='right' as={Link} to={`/posts/${id}`}>
-							<Button basic color='blue'>
-								<Icon name='comments' />
-							</Button>
-							<Label basic color='blue' pointing='left'>
-								{commentCount}
-							</Label>
+				<Tooltip content='Comment on post'>
+					<Button labelPosition='right' as={Link} to={`/posts/${id}`}>
+						<Button basic color='blue'>
+							<Icon name='comments' />
 						</Button>
-					}
-				/>
+						<Label basic color='blue' pointing='left'>
+							{commentCount}
+						</Label>
+					</Button>
+				</Tooltip>
 				{user?.username === username && <DeleteButton postId={id} callback={deletePostCallback} />}
 			</Card.Content>
 		</Card>
