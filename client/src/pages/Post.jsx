@@ -11,12 +11,12 @@ import { AuthContext } from "../context/auth";
 
 dayjs.extend(relativeTime);
 const Post = () => {
-	const { id } = useParams();
+	const { postId } = useParams();
 	const history = useHistory();
 	const { user } = useContext(AuthContext);
 
 	const { loading, data } = useQuery(FETCH_POST, {
-		variables: { id }
+		variables: { postId }
 	});
 
 	const deletePostCallback = () => {
@@ -32,7 +32,7 @@ const Post = () => {
 			</Loader>
 		);
 	} else {
-		const { id, body, username, likes, comments, likeCount, commentCount, createdAt } = data.getPost;
+		const { id, body, username, likes, comments, likeCount, commentCount, createdAt } = data?.getPost;
 
 		postContent = (
 			<Grid>
@@ -71,9 +71,23 @@ const Post = () => {
 										</Button>
 									}
 								/>
-								{user?.username === username && <DeleteButton id={id} callback={deletePostCallback} />}
+								{user?.username === username && <DeleteButton postId={postId} callback={deletePostCallback} />}
 							</Card.Content>
 						</Card>
+						{comments.map((comment) => (
+							<Card fluid key={comment?.id}>
+								<Card.Content>
+									{user?.username === comment?.username && <DeleteButton postId={postId} commentId={comment?.id} />}
+									<Card.Header>{comment?.username}</Card.Header>
+									<Card.Meta>
+										{dayjs().diff(dayjs(comment?.createdAt), "d") >= 1
+											? dayjs(comment?.createdAt).format("MMMM D, YYYY h:mm a")
+											: dayjs(comment?.createdAt).fromNow(true)}
+									</Card.Meta>
+									<Card.Description>{comment?.body}</Card.Description>
+								</Card.Content>
+							</Card>
+						))}
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>
@@ -84,8 +98,8 @@ const Post = () => {
 };
 
 const FETCH_POST = gql`
-	query ($id: ID!) {
-		getPost(id: $id) {
+	query ($postId: ID!) {
+		getPost(postId: $postId) {
 			id
 			body
 			username

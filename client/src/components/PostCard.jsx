@@ -44,7 +44,7 @@ const PostCard = ({ post }) => {
 						</Button>
 					}
 				/>
-				{user?.username === username && <DeleteButton id={id} callback={deletePostCallback} />}
+				{user?.username === username && <DeleteButton postId={id} callback={deletePostCallback} />}
 			</Card.Content>
 		</Card>
 	);
