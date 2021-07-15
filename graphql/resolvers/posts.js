@@ -13,13 +13,13 @@ const postResolvers = {
 				throw new Error(error);
 			}
 		},
-		async getPost(_, { id }) {
+		async getPost(_, { postId }) {
 			try {
-				if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+				if (!postId.match(/^[0-9a-fA-F]{24}$/)) {
 					throw new Error("Invalid post id");
 				}
 
-				const post = await Post.findById(id).exec();
+				const post = await Post.findById(postId).exec();
 
 				if (!post) {
 					throw new UserInputError("Post cannot be found");
@@ -53,11 +53,11 @@ const postResolvers = {
 
 			return post;
 		},
-		async deletePost(_, { id }, context) {
+		async deletePost(_, { postId }, context) {
 			const user = await checkAuthentication(context);
 
 			try {
-				const post = await Post.findById(id).exec();
+				const post = await Post.findById(postId).exec();
 
 				if (!post) {
 					throw new UserInputError("Does not exists. Post may be deleted");
